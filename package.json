@@ -1,0 +1,16 @@
+{
+  "name": "amuntchi-android",
+  "version": "5.0.0",
+  "private": true,
+  "description": "AMUNTCHI - gestion de quincaillerie, application Android synchronisée avec le logiciel PC",
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/filesystem": "^7.0.0",
+    "@capacitor/share": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0"
+  }
+}

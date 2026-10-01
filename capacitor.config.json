@@ -1,0 +1,9 @@
+{
+  "appId": "ne.amuntchi.gestion",
+  "appName": "AMUNTCHI",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true
+  }
+}

@@ -1,0 +1,70 @@
+name: Fabriquer l'APK AMUNTCHI
+
+# Se lance à chaque envoi de fichiers sur GitHub, ou à la main (onglet Actions > Run workflow).
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le projet
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Installer Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Installer les outils Android
+        uses: android-actions/setup-android@v3
+
+      - name: Installer Capacitor et ses modules
+        run: npm install
+
+      - name: Créer le projet Android
+        run: |
+          cp node_modules/@capacitor/core/dist/capacitor.js www/capacitor.js
+          npx cap add android
+          npx cap sync android
+
+      - name: Icônes, écran de démarrage, appareil photo, version, signature
+        run: |
+          pip install pillow
+          python3 build/customize_android.py
+
+      - name: Compiler l'APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Préparer le fichier
+        run: cp android/app/build/outputs/apk/release/app-release.apk AMUNTCHI-Android-V5.apk
+
+      - name: Joindre l'APK au résultat
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMUNTCHI-Android-APK
+          path: AMUNTCHI-Android-V5.apk
+
+      - name: Publier l'APK (onglet Releases, téléchargeable depuis le téléphone)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v5.0-build${{ github.run_number }}
+          name: AMUNTCHI Android V5.0 (fabrication ${{ github.run_number }})
+          body: |
+            Application Android AMUNTCHI synchronisée avec le logiciel PC.
+            Téléchargez AMUNTCHI-Android-V5.apk depuis le téléphone puis ouvrez-le pour l'installer.
+          files: AMUNTCHI-Android-V5.apk
