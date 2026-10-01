@@ -1,0 +1,35 @@
+AMUNTCHI PC - VERSION 5.0
+=========================
+
+1. SYNCHRONISATION CLOUD PC / ANDROID (SUPABASE)
+   - Nouveau fichier cloud_sync.py (a garder a cote de app.py et core.py).
+   - Parametres > « Synchronisation Cloud PC / Android (Supabase) » :
+     adresse du projet, cle publique, e-mail et mot de passe du compte
+     boutique, nom de l'appareil, synchronisation automatique.
+   - Synchronisation automatique toutes les 2 minutes, ~15 s apres chaque
+     operation, et au demarrage. Etat affiche en bas du menu de gauche
+     (cliquer pour synchroniser).
+   - Fonctionne sans Internet : les modifications attendent et partent des
+     que la connexion revient.
+   - Ventes, achats, transferts, paiements faits en meme temps sur le PC et
+     les telephones : tous conserves. Stocks recalcules a partir des
+     mouvements, soldes des credits a partir des paiements.
+   - Premiere synchronisation : sauvegarde automatique de la base, puis
+     envoi de toutes les donnees existantes (les stocks anciens sans
+     mouvement recoivent un mouvement « Solde d'ouverture »).
+   - L'ancienne synchronisation par dossier / paquet JSON est remplacee.
+
+2. CREDITS
+   - Avance, solde et echeances recalcules a partir de l'ensemble des
+     paiements (meme regle sur PC et telephones). Plusieurs petits
+     paiements reglent desormais les echeances correspondantes.
+
+3. PHOTOS DES PRODUITS
+   - Une miniature de la photo est partagee avec les telephones ; les
+     photos prises au telephone s'affichent sur le PC.
+
+4. HISTORIQUES
+   - Listes classees par date (les enregistrements crees sur un telephone
+     ont un numero propre au telephone).
+
+5. RECHERCHE PRODUITS PAR FAMILLE (V4.1) : voir CHANGELOG_V4 points 13-14.

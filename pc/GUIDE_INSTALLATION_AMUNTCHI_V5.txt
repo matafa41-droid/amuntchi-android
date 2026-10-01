@@ -1,0 +1,135 @@
+AMUNTCHI V5 - PC + ANDROID SYNCHRONISES PAR LE CLOUD
+Guide d'installation (a faire une seule fois)
+======================================================================
+
+CONTENU DU PAQUET
+  AMUNTCHI_PC_V5\          logiciel PC (remplace la V4)
+  AMUNTCHI_ANDROID\        projet de l'application Android (a envoyer sur GitHub)
+  supabase_amuntchi.sql    script de creation de la base Cloud
+  ce guide
+
+COMMENT CA MARCHE
+  - Le PC et chaque telephone gardent TOUTES les donnees sur l'appareil :
+    ils fonctionnent normalement sans Internet.
+  - Des que la connexion est disponible, chaque appareil envoie ses
+    modifications au Cloud et recoit celles des autres (automatiquement
+    toutes les 2 minutes, environ 15 secondes apres chaque operation,
+    ou avec le bouton « Synchroniser »).
+  - Les ventes, achats, transferts, paiements faits en meme temps sur le PC
+    et sur un telephone sont TOUS conserves. Les quantites en stock et les
+    soldes des credits sont recalcules a partir des mouvements et des
+    paiements : rien ne s'ecrase.
+  - Si un meme produit est modifie sur deux appareils (ex. son prix), c'est
+    la modification la plus recente qui est gardee.
+  - Memes comptes utilisateurs, memes roles, memes mots de passe partout.
+
+
+ETAPE 1 - CREER LE CLOUD SUPABASE (gratuit, environ 10 minutes)
+----------------------------------------------------------------------
+ 1. Aller sur https://supabase.com > « Start your project » > creer un
+    compte (adresse e-mail ou compte GitHub).
+ 2. « New project » : nom « amuntchi », choisir un mot de passe de base de
+    donnees (a garder), region « Europe (Frankfurt) » ou la plus proche.
+    Attendre 1 a 2 minutes la creation.
+ 3. Menu de gauche « SQL Editor » > « New query » : copier-coller tout le
+    contenu du fichier supabase_amuntchi.sql > bouton « Run ».
+    Le message « Success. No rows returned » doit s'afficher.
+ 4. Menu « Authentication » > « Users » > « Add user » > « Create new user » :
+       e-mail    : par exemple boutique.amuntchi@gmail.com
+       mot de passe : un mot de passe solide
+       cocher « Auto Confirm User » > « Create user ».
+    C'est le COMPTE BOUTIQUE : le PC et les telephones l'utilisent pour
+    acceder au Cloud (ce n'est pas un compte vendeur).
+ 5. Securite conseillee : « Authentication » > « Sign In / Providers » >
+    desactiver « Allow new users to sign up » > Save.
+ 6. Menu « Project Settings » (roue dentee) > « Data API » ou « API Keys » :
+    noter
+       - Project URL         (ex. https://abcdefgh.supabase.co)
+       - la cle publique « anon public » (ou « publishable key »)
+
+ A NOTER : un projet Supabase gratuit est mis en pause apres une semaine
+ SANS AUCUNE utilisation. Avec une utilisation quotidienne cela n'arrive
+ pas ; sinon, le relancer depuis le tableau de bord Supabase (« Restore »).
+
+
+ETAPE 2 - METTRE A JOUR LE PC
+----------------------------------------------------------------------
+ 1. Remplacer les fichiers du logiciel par ceux du dossier AMUNTCHI_PC_V5
+    (app.py, core.py et le NOUVEAU fichier cloud_sync.py, tous ensemble).
+    Les donnees du PC ne sont pas touchees.
+    Pour l'executable Windows : lancer build_windows.bat.
+ 2. Ouvrir AMUNTCHI, se connecter en Administrateur > Parametres >
+    « Synchronisation Cloud PC / Android (Supabase) » :
+       Adresse du projet, Cle publique, E-mail et Mot de passe du compte
+       boutique (etape 1), Nom de cet appareil : PC.
+ 3. « Tester la connexion », puis « Synchroniser maintenant ».
+    La premiere fois, une sauvegarde complete de la base est faite
+    automatiquement, puis toutes les donnees du PC sont envoyees au Cloud.
+ 4. L'etat du Cloud s'affiche en bas du menu de gauche (cliquer dessus pour
+    synchroniser). « Hors ligne » = pas d'Internet : rien n'est perdu.
+
+
+ETAPE 3 - FABRIQUER L'APK AVEC GITHUB (gratuit, environ 15 minutes)
+----------------------------------------------------------------------
+ 1. Aller sur https://github.com et se connecter (ou creer un compte).
+ 2. « New repository » : nom « amuntchi-android », choisir « Private »,
+    cocher « Add a README file » > « Create repository ».
+ 3. « Add file » > « Upload files » : glisser TOUT le contenu du dossier
+    AMUNTCHI_ANDROID (les dossiers www, build, .github et les fichiers
+    package.json, capacitor.config.json, README.md) > « Commit changes ».
+    ATTENTION : le dossier « .github » doit bien etre envoye (il contient
+    la recette de fabrication). S'il n'apparait pas dans la liste du site,
+    voir la remarque en fin d'etape.
+ 4. Onglet « Actions » : la fabrication « Fabriquer l'APK AMUNTCHI » demarre
+    toute seule (rond jaune). Attendre la coche verte (8 a 12 minutes).
+    Si elle ne demarre pas : cliquer dessus > « Run workflow ».
+ 5. Page d'accueil du depot > colonne de droite « Releases » > derniere
+    version > telecharger « AMUNTCHI-Android-V5.apk ».
+    (Le fichier est aussi disponible dans Actions > la fabrication >
+    « Artifacts ».)
+
+ Remarque .github : si le dossier n'a pas ete envoye, dans GitHub faire
+ « Add file » > « Create new file », nommer le fichier exactement
+ .github/workflows/build-apk.yml , coller le contenu du fichier
+ AMUNTCHI_ANDROID\.github\workflows\build-apk.yml > « Commit changes ».
+
+ Mises a jour futures : il suffit de renvoyer les fichiers modifies sur
+ GitHub ; une nouvelle APK est fabriquee. Elle s'installe PAR-DESSUS
+ l'ancienne sans perdre les donnees du telephone (meme cle de signature).
+
+
+ETAPE 4 - INSTALLER SUR CHAQUE TELEPHONE
+----------------------------------------------------------------------
+ 1. Ouvrir le fichier AMUNTCHI-Android-V5.apk sur le telephone (telecharge
+    depuis GitHub, ou envoye par WhatsApp / cable USB).
+    Android demande d'autoriser l'installation depuis cette source :
+    accepter, puis « Installer ».
+ 2. Ouvrir AMUNTCHI : l'ecran « Mise en service » s'affiche. Saisir :
+       Adresse du projet, Cle publique, E-mail et Mot de passe du compte
+       boutique (les memes que sur le PC)
+       Numero de ce telephone : 1 pour le premier telephone, 2 pour le
+       deuxieme, etc. (CHAQUE TELEPHONE UN NUMERO DIFFERENT)
+       Nom de l'appareil : par exemple TEL-1 ou « Tel. vendeur Ali »
+ 3. « CONNECTER ET TELECHARGER LES DONNEES » (Internet necessaire cette
+    premiere fois uniquement), puis se connecter avec les identifiants
+    habituels du logiciel PC (meme mot de passe).
+
+
+REGLES IMPORTANTES
+----------------------------------------------------------------------
+ - UN SEUL PC synchronise avec le Cloud. Plusieurs telephones possibles
+   (numeros 1 a 9, tous differents).
+ - Ne jamais changer le numero d'un telephone apres sa mise en service.
+   Pour reprendre un telephone : Parametres > « Reinitialiser ce
+   telephone » (apres synchronisation, sinon les ventes non envoyees sont
+   perdues).
+ - Numeros de facture : le PC garde son prefixe (AM-), chaque telephone
+   a le sien (AM-T1-, AM-T2-...) : aucune facture en double.
+ - « Reinitialisation securisee des donnees » (PC ou telephone) efface les
+   donnees commerciales sur TOUS les appareils apres synchronisation.
+ - Sauvegardes : le PC fait une sauvegarde automatique avant la premiere
+   synchronisation ; continuez a faire « Sauvegarder la base de donnees »
+   regulierement. Sur le telephone : Parametres > « Exporter une
+   sauvegarde (JSON) ».
+ - Les photos des produits (prises sur le PC ou au telephone) sont
+   partagees entre tous les appareils.

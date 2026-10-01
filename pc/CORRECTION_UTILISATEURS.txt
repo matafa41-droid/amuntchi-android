@@ -1,0 +1,8 @@
+AMUNTCHI V2 HD - Correction Utilisateurs
+- Vérification préalable des identifiants uniques.
+- Message clair si l'identifiant existe déjà.
+- Création Administrateur/Vendeur.
+- Confirmation du mot de passe.
+- Statut actif/inactif.
+- Fenêtre d'ajout centrée et complète.
+- Conservation des catégories, synchronisation et Cloud de la version source.

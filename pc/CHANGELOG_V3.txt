@@ -1,0 +1,66 @@
+AMUNTCHI PC - VERSION 3.0 (corrections techniques)
+==================================================
+
+1. MOTS DE PASSE CHIFFRES
+   - PBKDF2-SHA256, sel aleatoire par compte, 200 000 iterations.
+   - Migration automatique au demarrage : les anciens mots de passe en clair
+     sont convertis, l'operation est inscrite au journal d'audit.
+   - Connexion tolerante a l'ancien format (re-hachage transparent).
+   - Nouveaux ecrans : "Mon mot de passe" (tous les comptes) et
+     "Reinitialiser le mot de passe" (administrateur, avec double controle).
+   - Controle de robustesse : 6 caracteres minimum, refus des mots de passe courants.
+   - Avertissement si le compte admin utilise encore le mot de passe par defaut.
+
+2. COMPATIBILITE MULTI-PLATEFORME
+   - Plein ecran : state('zoomed') puis replis '-zoomed' et plein ecran calcule.
+   - Ouverture de dossiers/fichiers : Windows (startfile), macOS (open), Linux (xdg-open).
+
+3. BOITE DE DIALOGUE DES ECHEANCES
+   - tkinter.simpledialog importe explicitement : le nombre d'echeances saisi
+     est reellement pris en compte (plus de repli silencieux sur 3).
+
+4. ARCHITECTURE
+   - core.py : configuration, utilitaires, securite, base de donnees, sauvegardes.
+   - app.py  : interface graphique uniquement.
+   - Index SQL ajoutes (ventes par date, mouvements, lignes de vente, code-barres).
+   - Journal WAL active pour la robustesse des ecritures.
+
+5. SYNCHRONISATION : CONTROLE DE CONFLIT
+   - Le paquet transporte desormais l'appareil d'origine et l'horodatage des
+     dernieres ecritures.
+   - Avant tout remplacement (fichier, dossier Cloud ou HTTPS), comparaison avec
+     les dernieres ecritures locales et la derniere synchronisation :
+     alerte explicite en cas d'ecrasement d'operations plus recentes.
+   - Memorisation de la date de derniere synchronisation.
+
+6. RAPPORTS ENRICHIS
+   - Filtres : aujourd'hui, 7 derniers jours, mois en cours, mois precedent,
+     annee en cours, tout, ou periode personnalisee (AAAA-MM-JJ).
+   - Indicateurs : CA, marge brute et taux, achats, depenses, encaisse,
+     reste a encaisser, resultat indicatif, credits en cours.
+   - Tableau des marges par produit (quantite vendue, CA, cout, marge, taux).
+   - Exports du rapport en CSV et en PDF (en-tete commerciale, multi-pages).
+   - Le cout d'achat est fige sur chaque ligne de vente (colonne cost) pour que
+     les marges historiques restent exactes apres un changement de tarif.
+
+7. LECTURE DE CODE-BARRES
+   - Champ de scan dans Ventes / caisse : code-barres ou reference, touche Entree.
+   - Regroupement automatique des lignes identiques et controle du stock disponible.
+   - Index SQL sur la colonne code-barres.
+
+8. ERGONOMIE ET DIVERS
+   - Page Parametres defilante : les sections Securite, Sauvegarde et
+     Reinitialisation sont desormais toutes accessibles.
+   - Libelles ajoutes dans la caisse (client, montant paye, mode de paiement).
+   - Creation d'utilisateur : les 5 roles sont proposes (au lieu de 2).
+   - Modes de paiement centralises dans une seule liste.
+   - Sauvegardes centralisees (backup_now) avant reinitialisation et synchronisation.
+   - Comparaisons SQL corrigees (guillemets simples) et connexion insensible a la casse.
+
+INSTALLATION
+   pip install -r requirements.txt
+   python app.py
+   ou build_windows.bat pour produire Amuntchi.exe
+
+IMPORTANT : gardez core.py a cote de app.py.
+Compte initial : admin / admin, a modifier des la premiere connexion.

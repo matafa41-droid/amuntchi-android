@@ -1,0 +1,156 @@
+AMUNTCHI PC - VERSION 4.0 (modifications demandees)
+===================================================
+
+1. TABLEAU DE BORD : ICONES ET ECRITURES
+   - Cartes redessinees : hauteur souple, retour a la ligne automatique,
+     tout le texte reste visible (titre, valeur, sous-titre).
+   - Reperes texte courts (VTE, ACH, STK, CRD) a la place des pictogrammes
+     qui ne s'affichaient pas avec certaines polices.
+   - Ventes du jour : montant + nombre de ventes + montant encaisse.
+   - Achats du jour : montant + nombre de receptions.
+   - Quantite en stock : total + detail Magasin / Boutique.
+   - Credits en cours : solde + nombre de credits ouverts.
+   - Alertes stock : colonnes Magasin, Boutique et Total.
+
+2. PRODUITS ET STOCK : DEUX ONGLETS SEPARES
+   - "Produits (boutique)" : articles disponibles a la vente, c'est-a-dire
+     ceux transferes du magasin vers la boutique. Recherche, compteur,
+     option d'affichage des articles epuises.
+   - "Stock (magasin)" : articles issus des achats/receptions, avec valeur
+     d'achat du stock et acces direct a la reception et au transfert.
+   - Fiche produit complete (double-clic ou bouton) : photo affichee, categorie,
+     marque, unites, prix, marge unitaire, seuil, quantite magasin, quantite
+     boutique, quantite totale, observations et les 40 derniers mouvements.
+
+3. ENREGISTREMENT D'UN PRODUIT
+   - Champ CODE-BARRES supprime (formulaire, import et export CSV).
+   - Unites de stockage et de vente remplacees par la liste unique :
+     1/8 Litre, 1/4 Litre, 1/2 Litre, Litre, 4 Litres, 17 Litres, Carton,
+     Paquet, Boite, Piece, Kilo, Metre, Rouleau, Sac.
+     Les anciennes unites sont supprimees automatiquement de la base.
+   - Photo du produit : bouton "Scanner (camera)" pour prise de vue directe
+     et bouton "Galerie" pour choisir un fichier. Apercu immediat.
+     La photo est copiee dans le dossier de l'application.
+   - Formulaire defilant : les boutons Annuler / Enregistrer restent visibles.
+
+4. TRANSFERTS
+   - Choix du sens : Magasin vers Boutique ou Boutique vers Magasin.
+   - Plusieurs articles par transfert, avec quantite par article et controle
+     de la quantite disponible a la source.
+   - A la validation : la source diminue et la destination augmente
+     automatiquement, dans les deux sens.
+   - Historique avec nombre d'articles, quantite totale et detail par transfert.
+   - Cartes de rappel des quantites magasin et boutique.
+
+5. ACHATS / RECEPTIONS
+   - Destination imposee : STOCK MAGASIN (plus de choix d'emplacement).
+   - Quantite recue obligatoire et strictement superieure a 0.
+   - Affichage de la quantite actuelle au magasin lors de la selection.
+   - Message de confirmation avec la nouvelle quantite au magasin.
+   - Mise a jour du prix d'achat du produit si un prix est saisi.
+
+6. VENTES / CAISSE
+   - Vente uniquement des articles disponibles EN BOUTIQUE (quantite > 0).
+   - Selection par code-barres supprimee : choix dans la liste boutique
+     ou saisie/scan de la REFERENCE du produit.
+   - Total du panier affiche en permanence, retrait de ligne possible,
+     regroupement automatique des lignes identiques.
+   - Le stock deduit est celui de la boutique.
+
+7. CLIENTS ET CREDITS
+   - Vue synthese : nombre de credits, montant total a credit, deja encaisse,
+     reste a payer.
+   - Onglet "Comptes clients" (total, deja paye, reste) et onglet
+     "Ventes a credit" (facture, montants, echeances payees/total).
+   - Compte client (clic sur le client) : articles achetes a credit, montant
+     paye, reste a payer, echeances avec detection des retards, paiements
+     recus, et bouton de paiement direct depuis le compte.
+   - Paiement : affectation automatique des echeances les plus anciennes.
+
+8. DEPENSES
+   - Toutes les depenses apparaissent dans la liste (numero, motif, montant,
+     date et heure, mode, utilisateur), triees de la plus recente.
+   - Totaux du jour, du mois et general avec le nombre de depenses.
+   - Recherche par motif ou date, motifs proposes automatiquement.
+
+9. INVENTAIRES
+   - Selection de l'emplacement (Magasin ou Boutique) puis de l'article :
+     la quantite disponible a cet emplacement s'affiche immediatement en grand.
+   - Ecart calcule en direct pendant la saisie du stock reel.
+   - A la validation : recapitulatif theorique / reel / ecart et quantite
+     disponible apres ajustement.
+   - Historique enrichi (emplacement, article, theorique, reel, ecart).
+
+10. RAPPORTS ET STATISTIQUES
+   - Les 8 cartes affichent l'integralite de leurs ecritures (CA, marge brute
+     et taux, achats, depenses, encaisse, reste a encaisser, resultat
+     indicatif, credits en cours).
+   - Tableaux avec defilement horizontal ET vertical : plus aucune colonne
+     coupee, dans tout le logiciel.
+
+INSTALLATION
+   pip install -r requirements.txt
+   python app.py
+   ou build_windows.bat pour produire Amuntchi.exe
+   Fonction scan photo : pip install opencv-python (optionnel).
+   Gardez core.py a cote de app.py.
+
+11. COMPTES : ROLE RESTREINT, RENOMMAGE ET SUPPRESSION (mise a jour)
+   - Nouveau role « Utilisateur » : le compte ne voit QUE les onglets
+     Ventes / caisse et Clients & credits (plus de tableau de bord, ni
+     produits, stock, transferts, achats, depenses, inventaires, rapports,
+     parametres). A l'ouverture de session il arrive directement en caisse.
+   - Bouton « Renommer / modifier » (ou double-clic sur la ligne) :
+     changer le nom affiche (par exemple Administrateur -> Salifou Yahaya),
+     l'identifiant de connexion, le role et le statut du compte.
+     Le nom saisi s'affiche aussitot dans le menu lateral, l'en-tete des
+     ecrans, les factures et le journal d'audit.
+   - Bouton « Supprimer l'utilisateur » : suppression definitive du compte
+     apres confirmation. Les ventes, achats, paiements, transferts et autres
+     operations deja enregistres restent dans l'historique.
+   - Protections : impossible de supprimer ou de retrograder le dernier
+     administrateur, impossible de supprimer le compte connecte.
+   - Toutes ces operations sont tracees dans le journal d'audit.
+
+12. DROITS PAR ROLE ET VALIDATION DES MODIFICATIONS (mise a jour)
+   - Administrateur : seul role ayant acces a toutes les fonctionnalites
+     (tableau de bord, produits, stock, transferts, achats, ventes, clients,
+     depenses, inventaires, rapports, parametres, utilisateurs, audit).
+   - Vendeur : uniquement les onglets Produits (boutique), Ventes / caisse
+     et Clients & credits.
+   - Utilisateur : uniquement les onglets Ventes / caisse et Clients & credits.
+   - Fiche de modification d'un compte : bouton « VALIDER ET ENREGISTRER ».
+     Avant l'enregistrement, un recapitulatif liste chaque changement
+     (ancien nom -> nouveau nom, identifiant, role, statut) et demande
+     confirmation. Un message confirme ensuite ce qui a ete enregistre.
+     Si rien n'a change, l'application le signale au lieu d'enregistrer.
+
+13. RECHERCHE PRODUITS PAR FAMILLE D'ARTICLES (mise a jour)
+   - Onglets « Produits (boutique) » et « Stock (magasin) ».
+   - Le premier mot de la recherche designe la famille d'articles (premier
+     mot de la designation) : « ampoule 20W » n'affiche QUE des ampoules,
+     puis seulement celles en 20W. Les projecteurs, ventilateurs, etc. en
+     20W sont exclus.
+   - Saisie souple : majuscules/minuscules, accents, pluriel (ampoules,
+     tuyaux), espaces dans les mesures (20 W = 20W = 20 watts,
+     4 litres = 4 L, 2,5 = 2.5). « 20W » ne trouve pas « 120W ».
+   - Ordre libre (« 20W ampoule ») et debut de mot accepte (« amp 20w »).
+   - Si la famille existe mais pas la mesure demandee (ex. ampoule 60W),
+     toute la famille est affichee avec un message en rouge.
+   - Recherche par nom de categorie (ex. « plomberie »), par marque, ou par
+     reference exacte.
+   - La touche Entree lance la recherche.
+   Conseil : commencez chaque designation par le type d'article
+   (« Ampoule LED 20W E27 », « Tuyau PVC 32mm ») pour un classement correct.
+
+14. CAISSE : RECHERCHE D'ARTICLE PAR FAMILLE (mise a jour)
+   - Nouveau champ « Rechercher un article » en haut de l'ecran Ventes /
+     caisse, actif des l'ouverture.
+   - La liste « Article de la boutique » se filtre pendant la frappe avec le
+     meme moteur que l'onglet Produits : « ampoule 20W » ne propose que les
+     ampoules 20W disponibles en boutique.
+   - Entree : si un seul article correspond, il est selectionne et le
+     curseur passe a la quantite ; sinon la liste filtree s'ouvre.
+   - Entree dans le champ Quantite : l'article est ajoute au panier et le
+     curseur revient dans la recherche pour l'article suivant.
+   - La saisie / le scan de la reference restent disponibles.

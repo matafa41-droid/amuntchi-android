@@ -4,6 +4,7 @@ name: Fabriquer l'APK AMUNTCHI
 on:
   push:
     branches: [main, master]
+    paths-ignore: ['pc/**', '.github/workflows/build-pc.yml']
   workflow_dispatch:
 
 permissions:

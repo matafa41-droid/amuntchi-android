@@ -1,0 +1,5 @@
+Pillow>=10.0
+reportlab>=4.0
+pyinstaller>=6.0
+# Optionnel : prise de photo produit par scan (camera)
+opencv-python>=4.9
